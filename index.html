@@ -378,26 +378,35 @@
             </div>
 
             <!-- Simple Contact Form Placeholder -->
-            <form class="p-8 rounded-2xl bg-[#161b22] border border-[#1f252d] shadow-xl">
-                <p class="text-sm text-gray-400 mb-6">Note: This is a static form; submission won't work without a backend service.</p>
-                <div class="space-y-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="Your Name" required>
-                    </div>
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                        <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="your.email@example.com" required>
-                    </div>
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
-                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="Your message here..." required></textarea>
-                    </div>
-                    <button type="submit" class="w-full px-6 py-3 border border-transparent text-base font-medium rounded-xl text-black bg-gradient-to-r from-teal-400 to-cyan-500 hover:from-teal-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/30 transition duration-300 transform hover:scale-[1.01]">
-                        Send Message
-                    </button>
-                </div>
-            </form>
+            <!-- Contact form — replace your existing form with this block -->
+<form id="contact-form" class="p-8 rounded-2xl bg-[#161b22] border border-[#1f252d] shadow-xl" novalidate>
+<p class="text-sm text-gray-400 mb-6">Note: This form uses EmailJS to send messages — no server needed.</p>
+
+<div class="space-y-6">
+    <div>
+    <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+    <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="Your Name" required>
+    </div>
+
+    <div>
+    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+    <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="your.email@example.com" required>
+    </div>
+
+    <div>
+    <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+    <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="Your message here..." required></textarea>
+    </div>
+
+    <!-- Feedback area (for success / error messages) -->
+    <div id="form-feedback" role="status" aria-live="polite" class="text-sm font-medium px-4 py-3 rounded-lg hidden"></div>
+
+    <button id="send-btn" type="submit" class="w-full px-6 py-3 border border-transparent text-base font-medium rounded-xl text-black bg-gradient-to-r from-teal-400 to-cyan-500 hover:from-teal-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/30 transition duration-300 transform hover:scale-[1.01]">
+    Send Message
+    </button>
+</div>
+</form>
+
         </section>
 
     </main>
@@ -504,5 +513,100 @@
         });
         
     </script>
+    <!-- EmailJS SDK -->
+<script src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
+
+<script>
+  /***************** CONFIG - replace these with your EmailJS values *****************/
+  const EMAILJS_PUBLIC_KEY = '7J-PcJWHCiD0ZvvqV';    // e.g. KjgGJxA12Abcd
+  const EMAILJS_SERVICE_ID = 'service_ii188cj';    // e.g. service_xxx
+  const EMAILJS_TEMPLATE_ID = 'template_8wcj5xm';  // e.g. template_xxx
+  /***********************************************************************************/
+
+  // Initialize EmailJS
+  (function() {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  })();
+
+  // DOM Elements (matches the form markup in your page)
+const form = document.getElementById('contact-form');
+const sendBtn = document.getElementById('send-btn');
+const feedback = document.getElementById('form-feedback');
+
+  // Small helper to show feedback with your theme classes
+function showFeedback(message, type = 'info') {
+    feedback.classList.remove('hidden');
+    feedback.textContent = message;
+
+    // reset classes
+    feedback.className = 'text-sm font-medium px-4 py-3 rounded-lg';
+
+    if (type === 'success') {
+    feedback.classList.add('bg-green-900/30', 'text-green-300', 'border', 'border-green-700');
+    } else if (type === 'error') {
+    feedback.classList.add('bg-red-900/30', 'text-red-300', 'border', 'border-red-700');
+    } else {
+    feedback.classList.add('bg-[#0d1117]', 'text-gray-300', 'border', 'border-gray-700');
+    }
+}
+
+  // Disable/enable send button and change label
+function setSendingState(isSending) {
+    sendBtn.disabled = isSending;
+    if (isSending) {
+sendBtn.classList.add('opacity-80', 'cursor-wait');
+sendBtn.innerHTML = 'Sending...';
+    } else {
+    sendBtn.classList.remove('opacity-80', 'cursor-wait');
+    sendBtn.innerHTML = 'Send Message';
+    }
+}
+
+function validateForm(data) {
+    if (!data.name) return 'Please enter your name.';
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!data.email || !re.test(data.email)) return 'Please enter a valid email.';
+    if (!data.message) return 'Please enter your message.';
+    return null;
+}
+
+  // Guard: only attach if DOM elements exist
+if (form && sendBtn && feedback) {
+    form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const templateParams = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        message: form.message.value.trim()
+    };
+
+    const err = validateForm(templateParams);
+    if (err) {
+        showFeedback(err, 'error');
+        return;
+    }
+
+    setSendingState(true);
+    showFeedback('Sending message...', 'info');
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+        .then(function(response) {
+        showFeedback('Message sent — thanks! I will reply soon.', 'success');
+        form.reset();
+        }, function(error) {
+        console.error('EmailJS error:', error);
+        showFeedback('Failed to send message. Try again later or email me directly at karthikdakaraju@gmail.com', 'error');
+        })
+        .finally(function() {
+        setTimeout(()=> setSendingState(false), 800);
+        });
+    });
+} else {
+    // helpful console warning for debug
+    console.warn('EmailJS: contact-form, send-btn or form-feedback element not found. Check IDs.');
+}
+</script>
+
 </body>
 </html>
