@@ -514,8 +514,12 @@
         
     </script>
     <!-- EmailJS SDK -->
-<script src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
+     <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
 
+
+    
 <script>
   /***************** CONFIG - replace these with your EmailJS values *****************/
   const EMAILJS_PUBLIC_KEY = '7J-PcJWHCiD0ZvvqV';    // e.g. KjgGJxA12Abcd
@@ -525,7 +529,7 @@
 
   // Initialize EmailJS
   (function() {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
+    emailjs.init({publicKey: EMAILJS_PUBLIC_KEY});
   })();
 
   // DOM Elements (matches the form markup in your page)
