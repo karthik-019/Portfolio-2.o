@@ -52,6 +52,7 @@
             transform: translateY(-8px); /* Deeper lift */
             box-shadow: 0 15px 25px -5px rgba(0, 212, 255, 0.4); /* Stronger teal glow */
             border-color: rgba(63, 8, 76, 0.5); /* Accent border on hover */
+            animation: floatCard 1.6s ease-in-out infinite; /* floating animation */
         }
         /* Skill Icon Shadow for Pop */
         .skill-icon {
@@ -67,6 +68,78 @@
             border-bottom: 3px solid var(--accent-color); /* Thicker for emphasis */
             padding-bottom: 4px !important;
         }
+
+        /* ===== Animations you asked for ===== */
+
+        /* Fade-in on scroll */
+        .fade-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animated gradient movement */
+        .animated-gradient {
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: left top; }
+            50% { background-position: right bottom; }
+            100% { background-position: left top; }
+        }
+
+        /* Glow pulse on hover */
+        .pulse-glow:hover {
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.6);
+        }
+
+        /* Floating project cards (used in .project-card:hover) */
+        @keyframes floatCard {
+            0%   { transform: translateY(-8px); }
+            50%  { transform: translateY(-14px); }
+            100% { transform: translateY(-8px); }
+        }
+        /* Fun wiggle for avatar */
+.avatar-wiggle {
+    transition: transform 0.2s ease-out;
+}
+
+.avatar-wiggle:hover {
+    animation: avatarWiggle 0.4s ease-in-out;
+}
+
+@keyframes avatarWiggle {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-6deg) scale(1.03); }
+    50% { transform: rotate(6deg) scale(1.03); }
+    75% { transform: rotate(-3deg) scale(1.02); }
+    100% { transform: rotate(0deg) scale(1); }
+}
+/* Jelly wobble on hover */
+.jelly:hover {
+    animation: jelly 0.5s ease;
+}
+
+@keyframes jelly {
+    0%   { transform: scale(1, 1); }
+    25%  { transform: scale(1.1, 0.9); }
+    50%  { transform: scale(0.9, 1.1); }
+    75%  { transform: scale(1.03, 0.97); }
+    100% { transform: scale(1, 1); }
+}
+/* Logo spin animation */
+@keyframes logoSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.logo-spin {
+    animation: logoSpin 0.7s ease-out;
+}
     </style>
 </head>
 <body class="antialiased">
@@ -74,7 +147,7 @@
     <!-- Navbar -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-[#0d1117]/95 backdrop-blur-md shadow-2xl shadow-black/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20"> <!-- Increased height for better visibility -->
+            <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0">
                     <a href="#home" class="text-2xl font-extrabold text-white hover:text-gray-300 transition duration-300 tracking-wider">
                         K<span style="color: var(--accent-color);">D</span>
@@ -98,7 +171,7 @@
             </div>
         </div>
 
-        <!-- Mobile menu, show/hide based on menu state. -->
+        <!-- Mobile menu -->
         <div class="sm:hidden hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#home" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-white bg-[#1f252d]">Home</a>
@@ -113,10 +186,9 @@
     <!-- Main Content Area -->
     <main class="pt-20">
         <!-- Hero Section -->
-        <section id="home" class="min-h-[90vh] flex items-center justify-center text-center p-6 bg-cover bg-center">
+        <section id="home" class="fade-section min-h-[90vh] flex items-center justify-center text-center p-6 bg-cover bg-center">
             <div class="max-w-4xl mx-auto p-8 sm:p-12 rounded-2xl bg-[#161b22]/90 backdrop-blur-sm border border-[#1f252d] shadow-2xl shadow-cyan-900/40">
-                <!-- Avatar Placeholder -->
-                <div class="w-32 h-32 mx-auto mb-6 rounded-full border-4 border-gray-600 overflow-hidden shadow-lg">
+                <div class="avatar-wiggle w-32 h-32 mx-auto mb-6 rounded-full border-4 border-gray-600 overflow-hidden shadow-lg">
                     <img src="https://placehold.co/128x128/300f45/a5b4cb?text=K" alt="KARTHIK Avatar" class="w-full h-full object-cover">
                 </div>
                 <h3 class="text-xl font-light text-gray-300 mb-2 sm:text-2xl">Hello, I'm</h3>
@@ -126,9 +198,11 @@
                     I specialize in designing efficient processes, building internal tools, and turning operational challenges into streamlined systems. With hands-on experience in CRM automation, workflow design, and front-end development, I create functional tools that reduce manual effort and support product and operations teams.
                 </p>
                 <div class="mt-10 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                    <a href="#projects" class="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-xl text-black bg-gradient-to-r from-teal-400 to-cyan-500 hover:from-teal-300 hover:to-cyan-400 shadow-xl shadow-cyan-500/40 transition duration-300 transform hover:scale-[1.03]">
+                    <a href="#projects"
+                        class="jelly animated-gradient pulse-glow inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-xl text-black bg-gradient-to-r from-teal-400 to-cyan-500 hover:from-teal-300 hover:to-cyan-400 shadow-xl shadow-cyan-500/40 transition duration-300 transform hover:scale-[1.03]">
                         View Projects
-                    </a>
+</a>
+
                     <a href="#contact" class="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-xl text-gray-200 bg-[#1f252d] border border-gray-600 hover:bg-[#2c323c] transition duration-300 transform hover:scale-[1.03]">
                         <i class="fa-solid fa-envelope mr-2"></i> Contact Me
                     </a>
@@ -137,30 +211,28 @@
         </section>
 
         <!-- About Section -->
-        <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <section id="about" class="fade-section py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <h2 class="text-4xl section-title text-white">About Me</h2>
             <div class="mt-10 grid md:grid-cols-3 gap-12 items-start">
                 <!-- Text Column -->
                 <div class="md:col-span-2">
                     <p class="text-gray-400 text-lg leading-relaxed">
-                        I’m Karthik, a versatile professional who bridges the gap between **Operations** and **Development**. My core passion lies in identifying operational bottlenecks and solving them not just with process changes, but by building scalable, automated software solutions. This dual expertise allows me to create internal tools that are highly relevant, user-friendly, and deliver tangible efficiency gains.
+                        I’m Karthik, a versatile professional who bridges the gap between <strong>Operations</strong> and <strong>Development</strong>. My core passion lies in identifying operational bottlenecks and solving them not just with process changes, but by building scalable, automated software solutions. This dual expertise allows me to create internal tools that are highly relevant, user-friendly, and deliver tangible efficiency gains.
                     </p>
                     <p class="mt-4 text-gray-400 text-lg leading-relaxed">
-                        I specialize in CRM automation, Google Apps Script development (for bridging cloud services and data flow), dashboarding, and front-end development (HTML, CSS, JavaScript). My recent work includes implementing quality control systems and building a Mini CRM System with automated lead capture, follow-up reminders, and reporting, significantly improving data accuracy and team productivity.
+                        I specialize in CRM automation, Google Apps development (for bridging cloud services and data flow), dashboarding, and front-end development (HTML, CSS, JavaScript). My recent work includes implementing quality control systems and building a Mini CRM System with automated lead capture, follow-up reminders, and reporting, significantly improving data accuracy and team productivity.
                     </p>
                     <p class="mt-4 text-gray-400 text-lg leading-relaxed">
                         I enjoy the challenge of improving user experience for internal teams. I am always looking to learn and integrate new technologies to automate and streamline operations. Let's connect if you need someone who understands process and can build the product.
                     </p>
                     <a href="https://drive.google.com/file/d/1K9zzWyzXCEhDHAGxbPTlBQJwOoFRyIw1/view?usp=sharing" target="_blank"
-                    class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-xl 
-                        text-black bg-gradient-to-r from-teal-400 to-cyan-500 
+                    class="animated-gradient pulse-glow inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-xl 
+                            text-black bg-gradient-to-r from-teal-400 to-cyan-500 
                             hover:from-teal-300 hover:to-cyan-400 
-                        shadow-xl shadow-cyan-500/40 transition duration-300 transform hover:scale-[1.03]">
+                            shadow-xl shadow-cyan-500/40 transition duration-300 transform hover:scale-[1.03] mt-6">
                         <i class="fa-solid fa-file-arrow-down mr-2"></i>
                         View Resume
-</a>
-
-
+                    </a>
                 </div>
 
                 <!-- Highlights Column -->
@@ -194,11 +266,10 @@
         </section>
 
         <!-- Skills Section -->
-        <section id="skills" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-[#161b22] rounded-2xl my-12 shadow-inner shadow-black/20">
+        <section id="skills" class="fade-section py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-[#161b22] rounded-2xl my-12 shadow-inner shadow-black/20">
             <h2 class="text-4xl section-title text-white">Skills & Tech Stack</h2>
             <p class="text-lg text-gray-400 mb-12">Bridging operations, automation, and core web development.</p>
             
-            <!-- Skill Categories -->
             <div class="space-y-16">
                 <!-- 1. Product Operations & Automation -->
                 <div>
@@ -209,7 +280,6 @@
                             <p class="mt-3 text-sm font-medium text-gray-300 text-center">Workflow Automation</p>
                         </div>
                         <div class="flex flex-col items-center p-4 rounded-xl border border-[#1f252d] hover:bg-[#1f252d] transition duration-300">
-                            <!-- Custom Icon for CRM -->
                             <svg class="w-10 h-10 text-red-400 skill-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-10C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM15.5 8c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zm-7 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z"/></svg>
                             <p class="mt-3 text-sm font-medium text-gray-300 text-center">CRM Automation</p>
                         </div>
@@ -289,13 +359,12 @@
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <section id="projects" class="fade-section py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <h2 class="text-4xl section-title text-white">Latest Projects</h2>
             <p class="text-lg text-gray-400 mb-10">Showcasing my blend of development, automation, and analytical skills.</p>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                <!-- Project 1: Automated Mini CRM System -->
+                <!-- Project 1 -->
                 <div class="project-card rounded-xl p-6">
                     <img src="https://placehold.co/400x200/2c323c/00d4ff?text=Mini+CRM+System" alt="Project Image" class="rounded-lg mb-4 object-cover w-full h-40 border border-cyan-500/30">
                     <h3 class="text-2xl font-semibold mb-2 text-white">Automated Mini CRM System</h3>
@@ -303,17 +372,9 @@
                     <p class="text-gray-400 mb-4 text-sm">
                         Developed a complete system for lead management, including automated lead capture, timestamp tracking, dynamic follow-up reminders, and analytical dashboards. This significantly reduced manual data entry and improved conversion tracking visibility.
                     </p>
-                    <!-- <div class="flex space-x-4">
-                        <a href="#" class="text-sm font-medium text-teal-400 hover:text-white transition duration-300">
-                            <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Live Demo (N/A)
-                        </a>
-                        <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition duration-300">
-                            <i class="fa-brands fa-github mr-1"></i> Source Code
-                        </a>
-                    </div> -->
                 </div>
 
-                <!-- Project 2: Text Based Retrieval System -->
+                <!-- Project 2 -->
                 <div class="project-card rounded-xl p-6">
                     <img src="https://placehold.co/400x200/2c323c/00d4ff?text=Text+Retrieval+System" alt="Project Image" class="rounded-lg mb-4 object-cover w-full h-40 border border-cyan-500/30">
                     <h3 class="text-2xl font-semibold mb-2 text-white">Text Based Retrieval System</h3>
@@ -321,17 +382,9 @@
                     <p class="text-gray-400 mb-4 text-sm">
                         Designed and implemented a text retrieval system for efficiently searching and extracting information from large document repositories (PDFs/DOCX). Focused on maximizing retrieval accuracy and response speed using optimized algorithms. (Jan 2024 - Apr 2024)
                     </p>
-                    <!-- <div class="flex space-x-4">
-                        <a href="#" class="text-sm font-medium text-teal-400 hover:text-white transition duration-300">
-                            <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Live Demo
-                        </a>
-                        <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition duration-300">
-                            <i class="fa-brands fa-github mr-1"></i> Source Code
-                        </a>
-                    </div> -->
                 </div>
 
-                <!-- Project 3: Multipurpose Personal Hygiene Maintenance System -->
+                <!-- Project 3 -->
                 <div class="project-card rounded-xl p-6">
                     <img src="https://placehold.co/400x200/2c323c/00d4ff?text=IoT+Project" alt="Project Image" class="rounded-lg mb-4 object-cover w-full h-40 border border-cyan-500/30">
                     <h3 class="text-2xl font-semibold mb-2 text-white">IoT Hygiene System</h3>
@@ -339,14 +392,6 @@
                     <p class="text-gray-400 mb-4 text-sm">
                         A project exploring embedded systems and IoT data integration to automate or monitor specific personal hygiene maintenance tasks. Showcases skills in hardware-software integration and data processing. (Aug 2023 - Nov 2023)
                     </p>
-                    <!-- <div class="flex space-x-4">
-                        <a href="#" class="text-sm font-medium text-teal-400 hover:text-white transition duration-300">
-                            <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Live Demo
-                        </a>
-                        <a href="#" class="text-sm font-medium text-gray-400 hover:text-white transition duration-300">
-                            <i class="fa-brands fa-github mr-1"></i> Source Code
-                        </a>
-                    </div> -->
                 </div>
             </div>
             <div class="mt-16 text-center">
@@ -358,7 +403,7 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
+        <section id="contact" class="fade-section py-20 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
             <h2 class="text-4xl section-title text-white text-center mx-auto">Get In Touch</h2>
             <p class="text-lg text-gray-400 mb-10 text-center">I'm currently open to new roles and collaborations. Let’s build something efficient together!</p>
 
@@ -369,51 +414,45 @@
                 </p>
 
                 <div class="flex justify-center space-x-8">
-                    <!-- LinkedIn Link -->
                     <a href="https://www.linkedin.com/in/karthik-d-605363287/" target="_blank" class="text-4xl text-gray-400 hover:text-teal-400 transition duration-300" aria-label="LinkedIn">
                         <i class="fa-brands fa-linkedin"></i>
                     </a>
-                    <!-- GitHub Link -->
                     <a href="https://github.com/Kingcoder0319" target="_blank" class="text-4xl text-gray-400 hover:text-teal-400 transition duration-300" aria-label="GitHub">
                         <i class="fa-brands fa-github"></i>
                     </a>
-                    <!-- Phone Link -->
                     <a href="tel:9014056193" class="text-4xl text-gray-400 hover:text-teal-400 transition duration-300" aria-label="Phone">
                         <i class="fa-solid fa-phone"></i>
                     </a>
                 </div>
             </div>
 
-            <!-- Simple Contact Form Placeholder -->
-            <!-- Contact form — replace your existing form with this block -->
-<form id="contact-form" class="p-8 rounded-2xl bg-[#161b22] border border-[#1f252d] shadow-xl" novalidate>
-<p class="text-sm text-gray-400 mb-6">Note: This form uses EmailJS to send messages — no server needed.</p>
+            <!-- Contact form -->
+            <form id="contact-form" class="p-8 rounded-2xl bg-[#161b22] border border-[#1f252d] shadow-xl" novalidate>
+                <p class="text-sm text-gray-400 mb-6">Note: This form uses EmailJS to send messages — no server needed.</p>
 
-<div class="space-y-6">
-    <div>
-    <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
-    <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="Your Name" required>
-    </div>
+                <div class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="Your Name" required>
+                    </div>
 
-    <div>
-    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-    <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="your.email@example.com" required>
-    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="your.email@example.com" required>
+                    </div>
 
-    <div>
-    <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
-    <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="Your message here..." required></textarea>
-    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 bg-[#0d1117] border border-gray-600 rounded-lg text-white focus:ring-teal-500 focus:border-teal-500 transition duration-150" placeholder="Your message here..." required></textarea>
+                    </div>
 
-    <!-- Feedback area (for success / error messages) -->
-    <div id="form-feedback" role="status" aria-live="polite" class="text-sm font-medium px-4 py-3 rounded-lg hidden"></div>
+                    <div id="form-feedback" role="status" aria-live="polite" class="text-sm font-medium px-4 py-3 rounded-lg hidden"></div>
 
-    <button id="send-btn" type="submit" class="w-full px-6 py-3 border border-transparent text-base font-medium rounded-xl text-black bg-gradient-to-r from-teal-400 to-cyan-500 hover:from-teal-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/30 transition duration-300 transform hover:scale-[1.01]">
-    Send Message
-    </button>
-</div>
-</form>
-
+                    <button id="send-btn" type="submit" class="animated-gradient pulse-glow w-full px-6 py-3 border border-transparent text-base font-medium rounded-xl text-black bg-gradient-to-r from-teal-400 to-cyan-500 hover:from-teal-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/30 transition duration-300 transform hover:scale-[1.01]">
+                        Send Message
+                    </button>
+                </div>
+            </form>
         </section>
 
     </main>
@@ -425,7 +464,6 @@
             <p class="mt-2 text-xs">Built with <span class="text-red-500">&hearts;</span> and Tailwind CSS.</p>
         </div>
     </footer>
-
 
     <script>
         // Set current year in footer
@@ -443,7 +481,7 @@
 
         // Close mobile menu on link click
         document.querySelectorAll('#mobile-menu a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function () {
                 mobileMenu.classList.add('hidden');
                 mobileMenuButton.setAttribute('aria-expanded', 'false');
             });
@@ -454,18 +492,16 @@
         const navLinks = document.querySelectorAll('.nav-link');
         const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-        // Adjust the rootMargin to account for the fixed header (e.g., 80px for a 20 unit high navbar)
         const headerHeight = document.getElementById('navbar').offsetHeight || 80;
         const rootMarginValue = `-${headerHeight - 1}px 0px -50% 0px`;
         
         const observerOptions = {
             root: null,
-            rootMargin: rootMarginValue, // Use dynamic margin to trigger highlight correctly
-            threshold: 0 // Minimal threshold, using rootMargin for better section focus
+            rootMargin: rootMarginValue,
+            threshold: 0
         };
 
         const setActiveLink = (id) => {
-             // Function to clear active state
             const clearActive = (links) => {
                 links.forEach(link => {
                     link.classList.remove('active', 'bg-[#1f252d]', 'text-white');
@@ -473,7 +509,6 @@
                 });
             };
 
-            // Set active for desktop links
             clearActive(navLinks);
             const desktopLink = document.querySelector(`.nav-link[href="#${id}"]`);
             if (desktopLink) {
@@ -481,7 +516,6 @@
                 desktopLink.classList.remove('text-gray-400');
             }
 
-            // Set active for mobile links
             clearActive(mobileNavLinks);
             const mobileLink = document.querySelector(`.mobile-nav-link[href="#${id}"]`);
             if (mobileLink) {
@@ -493,7 +527,6 @@
         const observer = new IntersectionObserver((entries) => {
             let visibleSectionId = null;
 
-            // Find the last visible section (scrolling down means the last one seen is the current one)
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     visibleSectionId = entry.target.id;
@@ -502,122 +535,137 @@
             
             if (visibleSectionId) {
                 setActiveLink(visibleSectionId);
-            } else {
-                // Special case for top of the page when no section intersects (e.g., initial load or very fast scroll)
-                if (window.scrollY < headerHeight) {
-                     setActiveLink('home');
-                }
+            } else if (window.scrollY < headerHeight) {
+                setActiveLink('home');
             }
         }, observerOptions);
 
-        sections.forEach(section => {
-            observer.observe(section);
-        });
+        sections.forEach(section => observer.observe(section));
 
-        // Initial check for 'home' section on load
         window.addEventListener('load', () => {
             setActiveLink('home');
         });
-        
     </script>
-    <!-- EmailJS SDK -->
-     <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-</script>
-
-
-    
 <script>
-  /***************** CONFIG - replace these with your EmailJS values *****************/
-  const EMAILJS_PUBLIC_KEY = '7J-PcJWHCiD0ZvvqV';    // e.g. KjgGJxA12Abcd
-  const EMAILJS_SERVICE_ID = 'service_ii188cj';    // e.g. service_xxx
-  const EMAILJS_TEMPLATE_ID = 'template_8wcj5xm';  // e.g. template_xxx
-  /***********************************************************************************/
+// Fun: Logo Easter Egg — spin after 3 rapid clicks
+let logoClicks = 0;
+let logoTimer;
 
-  // Initialize EmailJS
-  (function() {
-    emailjs.init({publicKey: EMAILJS_PUBLIC_KEY});
-  })();
+const logo = document.querySelector('#navbar a');
 
-  // DOM Elements (matches the form markup in your page)
-const form = document.getElementById('contact-form');
-const sendBtn = document.getElementById('send-btn');
-const feedback = document.getElementById('form-feedback');
+logo.addEventListener('click', () => {
+    logoClicks++;
 
-  // Small helper to show feedback with your theme classes
-function showFeedback(message, type = 'info') {
-    feedback.classList.remove('hidden');
-    feedback.textContent = message;
+    clearTimeout(logoTimer);
+    logoTimer = setTimeout(() => logoClicks = 0, 800); // reset in 0.8s
 
-    // reset classes
-    feedback.className = 'text-sm font-medium px-4 py-3 rounded-lg';
-
-    if (type === 'success') {
-    feedback.classList.add('bg-green-900/30', 'text-green-300', 'border', 'border-green-700');
-    } else if (type === 'error') {
-    feedback.classList.add('bg-red-900/30', 'text-red-300', 'border', 'border-red-700');
-    } else {
-    feedback.classList.add('bg-[#0d1117]', 'text-gray-300', 'border', 'border-gray-700');
+    if (logoClicks >= 3) {
+        logo.classList.add('logo-spin');
+        setTimeout(() => logo.classList.remove('logo-spin'), 800);
+        logoClicks = 0;
     }
-}
-
-  // Disable/enable send button and change label
-function setSendingState(isSending) {
-    sendBtn.disabled = isSending;
-    if (isSending) {
-sendBtn.classList.add('opacity-80', 'cursor-wait');
-sendBtn.innerHTML = 'Sending...';
-    } else {
-    sendBtn.classList.remove('opacity-80', 'cursor-wait');
-    sendBtn.innerHTML = 'Send Message';
-    }
-}
-
-function validateForm(data) {
-    if (!data.name) return 'Please enter your name.';
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!data.email || !re.test(data.email)) return 'Please enter a valid email.';
-    if (!data.message) return 'Please enter your message.';
-    return null;
-}
-
-  // Guard: only attach if DOM elements exist
-if (form && sendBtn && feedback) {
-    form.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const templateParams = {
-        name: form.name.value.trim(),
-        email: form.email.value.trim(),
-        message: form.message.value.trim()
-    };
-
-    const err = validateForm(templateParams);
-    if (err) {
-        showFeedback(err, 'error');
-        return;
-    }
-
-    setSendingState(true);
-    showFeedback('Sending message...', 'info');
-
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-        .then(function(response) {
-        showFeedback('Message sent — thanks! I will reply soon.', 'success');
-        form.reset();
-        }, function(error) {
-        console.error('EmailJS error:', error);
-        showFeedback('Failed to send message. Try again later or email me directly at karthikdakaraju@gmail.com', 'error');
-        })
-        .finally(function() {
-        setTimeout(()=> setSendingState(false), 800);
-        });
-    });
-} else {
-    // helpful console warning for debug
-    console.warn('EmailJS: contact-form, send-btn or form-feedback element not found. Check IDs.');
-}
+});
 </script>
 
+    <!-- Fade-in IntersectionObserver for .fade-section -->
+    <script>
+        const fadeEls = document.querySelectorAll('.fade-section');
+
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    fadeObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        fadeEls.forEach(el => fadeObserver.observe(el));
+    </script>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script>
+        const EMAILJS_PUBLIC_KEY = '7J-PcJWHCiD0ZvvqV';
+        const EMAILJS_SERVICE_ID = 'service_ii188cj';
+        const EMAILJS_TEMPLATE_ID = 'template_8wcj5xm';
+
+        (function() {
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        })();
+
+        const form = document.getElementById('contact-form');
+        const sendBtn = document.getElementById('send-btn');
+        const feedback = document.getElementById('form-feedback');
+
+        function showFeedback(message, type = 'info') {
+            feedback.classList.remove('hidden');
+            feedback.textContent = message;
+            feedback.className = 'text-sm font-medium px-4 py-3 rounded-lg';
+
+            if (type === 'success') {
+                feedback.classList.add('bg-green-900/30', 'text-green-300', 'border', 'border-green-700');
+            } else if (type === 'error') {
+                feedback.classList.add('bg-red-900/30', 'text-red-300', 'border', 'border-red-700');
+            } else {
+                feedback.classList.add('bg-[#0d1117]', 'text-gray-300', 'border', 'border-gray-700');
+            }
+        }
+
+        function setSendingState(isSending) {
+            sendBtn.disabled = isSending;
+            if (isSending) {
+                sendBtn.classList.add('opacity-80', 'cursor-wait');
+                sendBtn.innerHTML = 'Sending...';
+            } else {
+                sendBtn.classList.remove('opacity-80', 'cursor-wait');
+                sendBtn.innerHTML = 'Send Message';
+            }
+        }
+
+        function validateForm(data) {
+            if (!data.name) return 'Please enter your name.';
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!data.email || !re.test(data.email)) return 'Please enter a valid email.';
+            if (!data.message) return 'Please enter your message.';
+            return null;
+        }
+
+        if (form && sendBtn && feedback) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const templateParams = {
+                    name: form.name.value.trim(),
+                    email: form.email.value.trim(),
+                    message: form.message.value.trim()
+                };
+
+                const err = validateForm(templateParams);
+                if (err) {
+                    showFeedback(err, 'error');
+                    return;
+                }
+
+                setSendingState(true);
+                showFeedback('Sending message...', 'info');
+
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                    .then(function() {
+                        showFeedback('Message sent — thanks! I will reply soon.', 'success');
+                        form.reset();
+                    }, function(error) {
+                        console.error('EmailJS error:', error);
+                        showFeedback('Failed to send message. Try again later or email me directly at karthikdakaraju@gmail.com', 'error');
+                    })
+                    .finally(function() {
+                        setTimeout(() => setSendingState(false), 800);
+                    });
+            });
+        } else {
+            console.warn('EmailJS: contact-form, send-btn or form-feedback element not found. Check IDs.');
+        }
+    </script>
 </body>
 </html>
